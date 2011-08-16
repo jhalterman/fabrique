@@ -16,22 +16,21 @@ import org.fabrique.Binder;
  * See {@link Binder} for information on creating bindings.
  */
 public interface ParamsSetBindingBuilder extends ScopedBindingBuilder {
-    /**
-     * Binds a set of optional params sets matching the binding's constructor or provider get
-     * method.
-     * 
-     * @param params Set of params sets for target or provider
-     * @return ScopedBindingBuilder
-     * @throws ConfigurationException If any element in {@code params} is null
-     */
-    ScopedBindingBuilder forOptionalParams(Class<?>[]... params);
+  /**
+   * Binds a set of optional params sets matching the binding's constructor or provider get method.
+   * 
+   * @param params Set of params sets for target or provider
+   * @return ScopedBindingBuilder
+   * @throws ConfigurationException If any element in {@code params} is null
+   */
+  ScopedBindingBuilder forOptionalParams(Class<?>[]... params);
 
-    /**
-     * Binds an optional params set matching the binding's constructor or provider get method.
-     * 
-     * @param params Params for target or provider
-     * @return ParamsSetBindingBuilder
-     * @throws ConfigurationException If any element in {@code params} is null
-     */
-    ParamsSetBindingBuilder forOptionalParams(Class<?>... params);
+  /**
+   * Binds an optional params set matching the binding's constructor or provider get method.
+   * 
+   * @param params Params for target or provider
+   * @return ParamsSetBindingBuilder
+   * @throws ConfigurationException If any element in {@code params} is null
+   */
+  ParamsSetBindingBuilder forOptionalParams(Class<?>... params);
 }

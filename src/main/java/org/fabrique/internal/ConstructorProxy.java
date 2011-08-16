@@ -8,10 +8,10 @@ import java.lang.reflect.InvocationTargetException;
  * @param <T> Proxied type
  */
 interface ConstructorProxy<T> {
-    /**
-     * Constructs an instance of {@code T} for the given arguments.
-     * 
-     * @param args Constructor arguments
-     */
-    T newInstance(Object... args) throws InvocationTargetException;
+  /**
+   * Constructs an instance of {@code T} for the given arguments.
+   * 
+   * @param args Constructor arguments
+   */
+  T newInstance(Object... args) throws InvocationTargetException;
 }

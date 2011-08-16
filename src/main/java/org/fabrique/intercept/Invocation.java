@@ -9,11 +9,11 @@ package org.fabrique.intercept;
  * @author AOP Alliance
  */
 public interface Invocation extends Joinpoint {
-    /**
-     * Get the arguments as an array object. It is possible to change element values within this
-     * array to change the arguments.
-     * 
-     * @return The argument of the invocation
-     */
-    Object[] getArguments();
+  /**
+   * Get the arguments as an array object. It is possible to change element values within this array
+   * to change the arguments.
+   * 
+   * @return The argument of the invocation
+   */
+  Object[] getArguments();
 }

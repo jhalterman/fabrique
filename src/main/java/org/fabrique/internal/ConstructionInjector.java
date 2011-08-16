@@ -8,14 +8,14 @@ import org.fabrique.Provider;
  * @param <T> Type to construct
  */
 public interface ConstructionInjector<T> extends DependencyInjector {
-    /**
-     * Performs construction for the wrapped type.
-     * 
-     * @param context Injection Context
-     * @param provider Optional provider
-     * @param args Construction arguments
-     * @throws ProvisionException If circular dependency is detected or if {@code T} or any
-     *             dependencies could not be constructed
-     */
-    T construct(InjectionContext context, Provider<T> provider, Object[] args);
+  /**
+   * Performs construction for the wrapped type.
+   * 
+   * @param context Injection Context
+   * @param provider Optional provider
+   * @param args Construction arguments
+   * @throws ProvisionException If circular dependency is detected or if {@code T} or any
+   *           dependencies could not be constructed
+   */
+  T construct(InjectionContext context, Provider<T> provider, Object[] args);
 }

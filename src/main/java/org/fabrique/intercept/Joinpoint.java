@@ -19,28 +19,28 @@ import java.lang.reflect.AccessibleObject;
  * @author AOP Alliance
  */
 public interface Joinpoint {
-    /**
-     * Returns the static part of this joinpoint. The static part is an accessible object on which a
-     * chain of interceptors are installed.
-     * 
-     * @return AccessibleObject
-     */
-    AccessibleObject getStaticPart();
+  /**
+   * Returns the static part of this joinpoint. The static part is an accessible object on which a
+   * chain of interceptors are installed.
+   * 
+   * @return AccessibleObject
+   */
+  AccessibleObject getStaticPart();
 
-    /**
-     * Returns the object that holds the current joinpoint's static part. For instance, the target
-     * object for an invocation.
-     * 
-     * @return The object (can be null if the accessible object is static).
-     */
-    Object getThis();
+  /**
+   * Returns the object that holds the current joinpoint's static part. For instance, the target
+   * object for an invocation.
+   * 
+   * @return The object (can be null if the accessible object is static).
+   */
+  Object getThis();
 
-    /**
-     * Proceeds to the next interceptor in the chain. The implementation and the semantics of this
-     * method depends on the actual joinpoint type (see the children interfaces).
-     * 
-     * @return See the children interfaces' proceed definition.
-     * @throws Throwable If the joinpoint throws an exception.
-     */
-    Object proceed() throws Throwable;
+  /**
+   * Proceeds to the next interceptor in the chain. The implementation and the semantics of this
+   * method depends on the actual joinpoint type (see the children interfaces).
+   * 
+   * @return See the children interfaces' proceed definition.
+   * @throws Throwable If the joinpoint throws an exception.
+   */
+  Object proceed() throws Throwable;
 }

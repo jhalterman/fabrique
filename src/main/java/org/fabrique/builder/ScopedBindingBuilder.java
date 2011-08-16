@@ -11,21 +11,21 @@ import org.fabrique.Scope;
  * See {@link Binder} for information on creating bindings.
  */
 public interface ScopedBindingBuilder {
-    /**
-     * Creates the binding in an eager singleton scope.
-     */
-    void asEagerSingleton();
+  /**
+   * Creates the binding in an eager singleton scope.
+   */
+  void asEagerSingleton();
 
-    /**
-     * Creates the binding in a singleton scope.
-     */
-    void asSingleton();
+  /**
+   * Creates the binding in a singleton scope.
+   */
+  void asSingleton();
 
-    /**
-     * Creates the binding in {@code scope}.
-     * 
-     * @param scope
-     * @throws ConfigurationException if {@code scope} is null
-     */
-    void in(Scope scope);
+  /**
+   * Creates the binding in {@code scope}.
+   * 
+   * @param scope
+   * @throws ConfigurationException if {@code scope} is null
+   */
+  void in(Scope scope);
 }

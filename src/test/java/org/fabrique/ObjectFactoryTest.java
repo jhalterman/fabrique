@@ -18,11 +18,9 @@ import java.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 
-
-
 /**
  * Tests {@link com.ObjectFactory.common.binder.Factory}.
- *
+ * 
  * @see {@link BindingsTest} for more specific binding tests.
  */
 public class ObjectFactoryTest {
@@ -60,14 +58,14 @@ public class ObjectFactoryTest {
   @Test
   public void testFindBindingsByType() {
     ObjectFactory.loadModules(new AbstractModule() {
-        protected void configure() {
-          bind(Set.class).to(HashSet.class);
-          bind(List.class).to(ArrayList.class);
-          bind(Collection.class).to(ArrayList.class);
-          bind(List.class).as("THREADSAFE").to(Vector.class);
-          bind(List.class).as("SLOW").to(LinkedList.class);
-        }
-      });
+      protected void configure() {
+        bind(Set.class).to(HashSet.class);
+        bind(List.class).to(ArrayList.class);
+        bind(Collection.class).to(ArrayList.class);
+        bind(List.class).as("THREADSAFE").to(Vector.class);
+        bind(List.class).as("SLOW").to(LinkedList.class);
+      }
+    });
 
     List<Key> _expectedKeys = new ArrayList<Key>(3);
     _expectedKeys.add(Key.get(List.class));
@@ -97,19 +95,19 @@ public class ObjectFactoryTest {
   @Test
   public void testGetBindings() {
     ObjectFactory.loadModules(new AbstractModule() {
-        protected void configure() {
-          bind(List.class).to(ArrayList.class);
-        }
-      });
+      protected void configure() {
+        bind(List.class).to(ArrayList.class);
+      }
+    });
 
     Map<Key<?>, Binding<?>> _bindings = ObjectFactory.getBindings();
     int _bindingsSize = _bindings.size();
 
     ObjectFactory.loadModules(new AbstractModule() {
-        protected void configure() {
-          bind(List.class).as("THREADSAFE").to(Vector.class);
-        }
-      });
+      protected void configure() {
+        bind(List.class).as("THREADSAFE").to(Vector.class);
+      }
+    });
 
     assertNotSame("Binding was not added to getBindings map", _bindingsSize, _bindings.size());
   }
@@ -120,17 +118,17 @@ public class ObjectFactoryTest {
   @Test
   public void testGetInstance() {
     ObjectFactory.loadModules(new AbstractModule() {
-        protected void configure() {
-          bind(List.class).to(ArrayList.class);
-        }
-      });
+      protected void configure() {
+        bind(List.class).to(ArrayList.class);
+      }
+    });
     assertNotNull("The factory should have returned a list instance",
-      ObjectFactory.getInstance(List.class));
+        ObjectFactory.getInstance(List.class));
   }
-  
+
   /**
-   * Verifies that {@link ObjectFactory#getInstances(Class)} returns a list of instances ordered by the 
-   * binding creation order.
+   * Verifies that {@link ObjectFactory#getInstances(Class)} returns a list of instances ordered by
+   * the binding creation order.
    */
   @Test
   public void testGetInstances() {
@@ -143,7 +141,7 @@ public class ObjectFactoryTest {
         bind(Collection.class).as("4").to(HashSet.class);
       }
     });
-    
+
     List<Collection> _instances = ObjectFactory.getInstances(Collection.class);
     assertTrue(_instances.get(0) instanceof ArrayList);
     assertTrue(_instances.get(1) instanceof Vector);
@@ -151,25 +149,25 @@ public class ObjectFactoryTest {
     assertTrue(_instances.get(3) instanceof LinkedList);
     assertTrue(_instances.get(4) instanceof HashSet);
   }
-  
+
   /**
-   * Verifies that the Factory throws IllegalArgumentException when attempting to get instances 
-   * for null.
+   * Verifies that the Factory throws IllegalArgumentException when attempting to get instances for
+   * null.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testGetInstancesForNull() {
     ObjectFactory.getInstances(null);
   }
-  
+
   /**
-   * Verifies that the Factory throws ConfigurationException when attempting to get instances 
-   * for an unbound type.
+   * Verifies that the Factory throws ConfigurationException when attempting to get instances for an
+   * unbound type.
    */
   @Test(expected = ConfigurationException.class)
   public void testGetInstancesForUnboundType() {
     ObjectFactory.getInstances(Collection.class);
   }
-  
+
   /**
    * Verifies that {@link ObjectFactory#getInstance(Class)} does not allow null.
    */
@@ -202,12 +200,12 @@ public class ObjectFactoryTest {
   @Test
   public void testGetInstanceFromProvider() {
     ObjectFactory.loadModules(new AbstractModule() {
-        protected void configure() {
-          bind(List.class).toProvider(ListProvider.class);
-        }
-      });
+      protected void configure() {
+        bind(List.class).toProvider(ListProvider.class);
+      }
+    });
     assertNotNull("The factory should have returned a list instance",
-      ObjectFactory.getInstance(List.class));
+        ObjectFactory.getInstance(List.class));
   }
 
   /**
@@ -216,10 +214,10 @@ public class ObjectFactoryTest {
   @Test(expected = ProvisionException.class)
   public void testGetInstanceWithArgsNoParams() {
     ObjectFactory.loadModules(new AbstractModule() {
-        protected void configure() {
-          bind(List.class).to(ArrayList.class);
-        }
-      });
+      protected void configure() {
+        bind(List.class).to(ArrayList.class);
+      }
+    });
 
     ObjectFactory.getInstance(List.class, 1);
   }
@@ -233,7 +231,8 @@ public class ObjectFactoryTest {
   }
 
   /**
-   * Verifies that a null value given to {@link ObjectFactory#getProvider(Class)} does not allow null.
+   * Verifies that a null value given to {@link ObjectFactory#getProvider(Class)} does not allow
+   * null.
    */
   @SuppressWarnings("unchecked")
   @Test(expected = ConfigurationException.class)
@@ -272,10 +271,10 @@ public class ObjectFactoryTest {
   @Test(expected = ProvisionException.class)
   public void testProviderException() {
     ObjectFactory.loadModules(new AbstractModule() {
-        protected void configure() {
-          bind(List.class).toProvider(BadListProvider.class);
-        }
-      });
+      protected void configure() {
+        bind(List.class).toProvider(BadListProvider.class);
+      }
+    });
 
     ObjectFactory.getInstance(List.class);
   }

@@ -16,12 +16,12 @@ import org.fabrique.Binder;
  * See {@link Binder} for information on creating bindings.
  */
 public interface ParamsBindingBuilder extends ParamsSetBindingBuilder {
-    /**
-     * Binds a set of param types matching the binding's constructor or provider 'get' method.
-     * 
-     * @param params Params for target or provider
-     * @return ParamsSetBindingBuilder
-     * @throws ConfigurationException If any element in {@code params} is null
-     */
-    ParamsSetBindingBuilder forParams(Class<?>... params);
+  /**
+   * Binds a set of param types matching the binding's constructor or provider 'get' method.
+   * 
+   * @param params Params for target or provider
+   * @return ParamsSetBindingBuilder
+   * @throws ConfigurationException If any element in {@code params} is null
+   */
+  ParamsSetBindingBuilder forParams(Class<?>... params);
 }

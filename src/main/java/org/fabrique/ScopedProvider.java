@@ -7,15 +7,15 @@ package org.fabrique;
  * @param <T> Provided type
  */
 public abstract class ScopedProvider<T> implements Provider<T> {
-    protected Provider<? extends T> provider;
+  protected Provider<? extends T> provider;
 
-    /**
-     * Sets the internal unscoped provider. This can be replaced after the scoped provider is
-     * created so that changing arguments can be swapped in via the unscoped provider.
-     * 
-     * @param unscoped Unscoped provider
-     */
-    public void setProvider(Provider<? extends T> unscoped) {
-        provider = unscoped;
-    }
+  /**
+   * Sets the internal unscoped provider. This can be replaced after the scoped provider is created
+   * so that changing arguments can be swapped in via the unscoped provider.
+   * 
+   * @param unscoped Unscoped provider
+   */
+  public void setProvider(Provider<? extends T> unscoped) {
+    provider = unscoped;
+  }
 }

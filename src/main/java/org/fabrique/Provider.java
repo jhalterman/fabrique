@@ -12,11 +12,11 @@ package org.fabrique;
  * @param <T> Type being provided
  */
 public interface Provider<T> {
-    /**
-     * Provides instances of T.
-     * 
-     * @return T
-     * @throws ProvisionException if an instance cannot be provided.
-     */
-    T get();
+  /**
+   * Provides instances of T.
+   * 
+   * @return T
+   * @throws ProvisionException if an instance cannot be provided.
+   */
+  T get();
 }

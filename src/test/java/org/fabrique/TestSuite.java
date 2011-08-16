@@ -8,8 +8,8 @@ import org.junit.runners.Suite;
 
 
 /**
- * Binder factory test suite.
-  */
+ * Fabrique test suite.
+ */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	BindingTest.class, 

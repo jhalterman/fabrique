@@ -11,10 +11,10 @@ import java.lang.reflect.Method;
  * @author AOP Alliance
  */
 public interface MethodInvocation extends Invocation {
-    /**
-     * Gets the method being called.
-     * 
-     * @return The method being called.
-     */
-    Method getMethod();
+  /**
+   * Gets the method being called.
+   * 
+   * @return The method being called.
+   */
+  Method getMethod();
 }

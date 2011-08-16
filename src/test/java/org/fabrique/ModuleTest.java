@@ -13,8 +13,6 @@ import java.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 
-
-
 /**
  * Tests {@link com.dorado.common.binder.AbstractModule} and
  * {@link com.Module.common.binder.IModule}.
@@ -89,10 +87,10 @@ public class ModuleTest {
   @Test
   public void testBindByKey() {
     ObjectFactory.loadModules(new AbstractModule() {
-        protected void configure() {
-          bind(Key.get(List.class)).to(ArrayList.class);
-        }
-      });
+      protected void configure() {
+        bind(Key.get(List.class)).to(ArrayList.class);
+      }
+    });
 
     assertNotNull("Binding was not created", ObjectFactory.getBinding(List.class));
   }
@@ -126,10 +124,10 @@ public class ModuleTest {
   @Test
   public void testInstall() {
     ObjectFactory.loadModules(new AbstractModule() {
-        protected void configure() {
-          install(new DiamondModule3());
-        }
-      });
+      protected void configure() {
+        install(new DiamondModule3());
+      }
+    });
 
     Set<?> _set = ObjectFactory.getInstance(Set.class);
     assertNotNull("Factory failed to produce an object", _set);
@@ -142,9 +140,9 @@ public class ModuleTest {
   @Test(expected = IllegalStateException.class)
   public void testReEntry() {
     ObjectFactory.loadModules(new AbstractModule() {
-        protected void configure() {
-          this.configure(binder);
-        }
-      });
+      protected void configure() {
+        this.configure(binder);
+      }
+    });
   }
 }

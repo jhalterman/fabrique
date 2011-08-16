@@ -102,7 +102,3 @@ Fabrique can manage the lifecycle of objects based on a configured scope:
 ## Design Notes
 
 While the desire to provide a single globally accessible injector API, such as was initially used by [StructureMap](http://structuremap.sourceforge.net), enhances usability for some use cases, it is clearly not suitable for use cases where multiple injectors are beneficial. The single injector approach poses a challenge for long running test sessions, where bindings loaded into the injector from one test method may interfere with those for other methods. This requires resetting the injector prior to invoking a test method.
-
-## License
-
-Fabrique is released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html).

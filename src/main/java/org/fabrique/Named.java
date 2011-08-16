@@ -14,9 +14,9 @@ import java.lang.annotation.Target;
  */
 @Retention(RUNTIME)
 @Target({ PARAMETER, ElementType.ANNOTATION_TYPE, ElementType.TYPE, ElementType.FIELD,
-        ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.LOCAL_VARIABLE })
+    ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.LOCAL_VARIABLE })
 @BindingAnnotation
 @Documented
 public @interface Named {
-    String value();
+  String value();
 }

@@ -12,121 +12,119 @@ import org.junit.Test;
  * Tests {@link com.dorado.common.binder.Scopes}.
  */
 public class ScopesTest {
-    private boolean singletonLoaded;
+  private boolean singletonLoaded;
 
-    /** Test interface */
-    interface ITest {
-    }
+  /** Test interface */
+  interface ITest {
+  }
 
-    /** Test class */
-    public static class TestClass implements ITest {
-    }
+  /** Test class */
+  public static class TestClass implements ITest {
+  }
 
-    /** Test class provider */
-    class TestProvider implements Provider<ITest> {
-        /**
-         * {@inheritDoc}
-         */
-        public ITest get() {
-            singletonLoaded = true;
-            return new TestClass();
-        }
-    }
-
+  /** Test class provider */
+  class TestProvider implements Provider<ITest> {
     /**
-     * Performs setup.
+     * {@inheritDoc}
      */
-    @Before
-    public void setup() {
-        TestUtil.resetFactoryBindings();
+    public ITest get() {
+      singletonLoaded = true;
+      return new TestClass();
     }
+  }
 
-    /**
-     * Tests that a singleton is eagerly loaded.
-     */
-    @Test
-    public void testEagerSingleton() {
-        ObjectFactory.loadModules(new AbstractModule() {
-            protected void configure() {
-                bind(ITest.class).toProvider(new TestProvider()).asEagerSingleton();
-            }
-        });
+  /**
+   * Performs setup.
+   */
+  @Before
+  public void setup() {
+    TestUtil.resetFactoryBindings();
+  }
 
-        assertTrue("TestClass should be eagerly instantiated", singletonLoaded);
-    }
+  /**
+   * Tests that a singleton is eagerly loaded.
+   */
+  @Test
+  public void testEagerSingleton() {
+    ObjectFactory.loadModules(new AbstractModule() {
+      protected void configure() {
+        bind(ITest.class).toProvider(new TestProvider()).asEagerSingleton();
+      }
+    });
 
-    /**
-     * Tests the pool scope.
-     */
-    @Test
-    public void testPool() {
-        ObjectFactory.loadModules(new AbstractModule() {
-            protected void configure() {
-                bind(String.class).forParams(String.class).in(new PoolScope(2));
-            }
-        });
+    assertTrue("TestClass should be eagerly instantiated", singletonLoaded);
+  }
 
-        String _string1 = ObjectFactory.getInstance(String.class, "test1");
-        String _string2 = ObjectFactory.getInstance(String.class, "test2");
-        PoolScope.release(Key.get(String.class), _string1);
+  /**
+   * Tests the pool scope.
+   */
+  @Test
+  public void testPool() {
+    ObjectFactory.loadModules(new AbstractModule() {
+      protected void configure() {
+        bind(String.class).forParams(String.class).in(new PoolScope(2));
+      }
+    });
 
-        String _string3 = ObjectFactory.getInstance(String.class, "test3");
-        PoolScope.release(Key.get(String.class), _string2);
+    String _string1 = ObjectFactory.getInstance(String.class, "test1");
+    String _string2 = ObjectFactory.getInstance(String.class, "test2");
+    PoolScope.release(Key.get(String.class), _string1);
 
-        String _string4 = ObjectFactory.getInstance(String.class, "test4");
-        assertEquals(_string1, _string3);
-        assertEquals(_string2, _string4);
-        PoolScope.release(Key.get(String.class), _string4);
+    String _string3 = ObjectFactory.getInstance(String.class, "test3");
+    PoolScope.release(Key.get(String.class), _string2);
 
-        String _string5 = ObjectFactory.getInstance(String.class, "test5");
-        assertEquals(_string2, _string5);
-        assertEquals(_string4, _string5);
-    }
+    String _string4 = ObjectFactory.getInstance(String.class, "test4");
+    assertEquals(_string1, _string3);
+    assertEquals(_string2, _string4);
+    PoolScope.release(Key.get(String.class), _string4);
 
-    /**
-     * Tests that singleton instances are properly produced by a singleton scoped provider.
-     */
-    @Test
-    public void testSingleton() {
-        ObjectFactory.loadModules(new AbstractModule() {
-            protected void configure() {
-                bind(ITest.class).to(TestClass.class).asSingleton();
-            }
-        });
+    String _string5 = ObjectFactory.getInstance(String.class, "test5");
+    assertEquals(_string2, _string5);
+    assertEquals(_string4, _string5);
+  }
 
-        Object _instance1 = ObjectFactory.getInstance(ITest.class);
-        Object _instance2 = ObjectFactory.getInstance(ITest.class);
-        assertEquals("Singleton scoped binding does not produce identical instances", _instance1,
-                _instance2);
-    }
+  /**
+   * Tests that singleton instances are properly produced by a singleton scoped provider.
+   */
+  @Test
+  public void testSingleton() {
+    ObjectFactory.loadModules(new AbstractModule() {
+      protected void configure() {
+        bind(ITest.class).to(TestClass.class).asSingleton();
+      }
+    });
 
-    /**
-     * Tests that thread scope works as expected.
-     */
-    @Test
-    public void testThreadScope() {
-        ObjectFactory.loadModules(new AbstractModule() {
-            protected void configure() {
-                bind(ITest.class).to(TestClass.class).in(Scopes.THREAD);
-            }
-        });
+    Object _instance1 = ObjectFactory.getInstance(ITest.class);
+    Object _instance2 = ObjectFactory.getInstance(ITest.class);
+    assertEquals("Singleton scoped binding does not produce identical instances", _instance1,
+        _instance2);
+  }
 
-        final ITest _instance1 = ObjectFactory.getInstance(ITest.class);
-        ITest _instance2 = ObjectFactory.getInstance(ITest.class);
+  /**
+   * Tests that thread scope works as expected.
+   */
+  @Test
+  public void testThreadScope() {
+    ObjectFactory.loadModules(new AbstractModule() {
+      protected void configure() {
+        bind(ITest.class).to(TestClass.class).in(Scopes.THREAD);
+      }
+    });
 
-        assertEquals(
-                "Thread scoped binding does not produce identical instances for the same thread",
-                _instance1, _instance2);
+    final ITest _instance1 = ObjectFactory.getInstance(ITest.class);
+    ITest _instance2 = ObjectFactory.getInstance(ITest.class);
 
-        Thread _thread = new Thread() {
-            public void run() {
-                assertNotSame(
-                        "Thread scoped binding produces identical instance in separate thread",
-                        _instance1, ObjectFactory.getInstance(ITest.class));
-            }
-        };
+    assertEquals("Thread scoped binding does not produce identical instances for the same thread",
+        _instance1, _instance2);
 
-        _thread.setUncaughtExceptionHandler(Thread.getDefaultUncaughtExceptionHandler());
-        _thread.start();
-    }
+    Thread _thread = new Thread() {
+      public void run() {
+        assertNotSame("Thread scoped binding produces identical instance in separate thread",
+            _instance1, ObjectFactory.getInstance(ITest.class));
+      }
+    };
+
+    _thread.setUncaughtExceptionHandler(Thread.getDefaultUncaughtExceptionHandler());
+    _thread.start();
+  }
 }

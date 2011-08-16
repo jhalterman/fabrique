@@ -198,49 +198,49 @@ import org.fabrique.matcher.Matcher;
  * bind(Service.class).as("TRANSACTIONAL").toProvider(TransactionalServiceProvider.class).in(Scopes.TRANSACTIONAL);</pre>
  */
 public interface Binder {
-    /**
-     * Creates a named binding builder for {@code type}.
-     * 
-     * @param <T> Bound type
-     * @param type Type to bind
-     * @return NamedBindingBuilder<T>
-     * @throws ConfigurationException if {@code type} is a primitive class
-     */
-    <T> NamedBindingBuilder<T> bind(Class<T> type);
+  /**
+   * Creates a named binding builder for {@code type}.
+   * 
+   * @param <T> Bound type
+   * @param type Type to bind
+   * @return NamedBindingBuilder<T>
+   * @throws ConfigurationException if {@code type} is a primitive class
+   */
+  <T> NamedBindingBuilder<T> bind(Class<T> type);
 
-    /**
-     * Creates a targeted binding builder for {@code key}.
-     * 
-     * @param <T> Bound type
-     * @param key Key to bind
-     * @return TargetBindingBuilder<T>
-     * @throws ConfigurationException if {@code key} represents a primitive class
-     */
-    <T> TargetBindingBuilder<T> bind(Key<T> key);
+  /**
+   * Creates a targeted binding builder for {@code key}.
+   * 
+   * @param <T> Bound type
+   * @param key Key to bind
+   * @return TargetBindingBuilder<T>
+   * @throws ConfigurationException if {@code key} represents a primitive class
+   */
+  <T> TargetBindingBuilder<T> bind(Key<T> key);
 
-    /**
-     * Binds one or more method interceptors to methods matched by class and method matchers. A
-     * method is eligible for interception if:
-     * 
-     * <ul>
-     * <li>The ObjectFactory created the instance the method is on</li>
-     * <li>Neither the enclosing type nor the method is final</li>
-     * <li>And the method is package-private, protected, or public</li>
-     * </ul>
-     * 
-     * @param classMatcher matches classes the interceptor should apply to. For example:
-     *            {@code only(Runnable.class)}.
-     * @param methodMatcher matches methods the interceptor should apply to. For example:
-     *            {@code annotatedWith(Transactional.class)}.
-     * @param interceptors to bind
-     */
-    void bindInterceptors(Matcher<? super Class<?>> classMatcher,
-            Matcher<? super Method> methodMatcher, IMethodInterceptor... interceptors);
+  /**
+   * Binds one or more method interceptors to methods matched by class and method matchers. A method
+   * is eligible for interception if:
+   * 
+   * <ul>
+   * <li>The ObjectFactory created the instance the method is on</li>
+   * <li>Neither the enclosing type nor the method is final</li>
+   * <li>And the method is package-private, protected, or public</li>
+   * </ul>
+   * 
+   * @param classMatcher matches classes the interceptor should apply to. For example:
+   *          {@code only(Runnable.class)}.
+   * @param methodMatcher matches methods the interceptor should apply to. For example:
+   *          {@code annotatedWith(Transactional.class)}.
+   * @param interceptors to bind
+   */
+  void bindInterceptors(Matcher<? super Class<?>> classMatcher,
+      Matcher<? super Method> methodMatcher, IMethodInterceptor... interceptors);
 
-    /**
-     * Installs additional modules or sub-modules into the factory for the current binder instance.
-     * 
-     * @param module Module to install
-     */
-    void install(Module module);
+  /**
+   * Installs additional modules or sub-modules into the factory for the current binder instance.
+   * 
+   * @param module Module to install
+   */
+  void install(Module module);
 }

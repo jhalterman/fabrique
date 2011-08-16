@@ -24,14 +24,14 @@ package org.fabrique.intercept;
  * @author AOP Alliance
  */
 public interface IMethodInterceptor extends Interceptor {
-    /**
-     * Implement this method to perform extra treatments before and after the invocation. Polite
-     * implementations would certainly like to invoke {@link Joinpoint.proceed()}.
-     * 
-     * @param pInvocation The method invocation joinpoint
-     * @return The result of the call to {@link Joinpoint.proceed()}, might be intercepted by the
-     *         interceptor.
-     * @throws Throwable If the interceptors or the target-object throws an exception.
-     */
-    Object invoke(MethodInvocation pInvocation) throws Throwable;
+  /**
+   * Implement this method to perform extra treatments before and after the invocation. Polite
+   * implementations would certainly like to invoke {@link Joinpoint.proceed()}.
+   * 
+   * @param pInvocation The method invocation joinpoint
+   * @return The result of the call to {@link Joinpoint.proceed()}, might be intercepted by the
+   *         interceptor.
+   * @throws Throwable If the interceptors or the target-object throws an exception.
+   */
+  Object invoke(MethodInvocation pInvocation) throws Throwable;
 }

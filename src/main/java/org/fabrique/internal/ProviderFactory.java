@@ -8,33 +8,33 @@ import org.fabrique.Provider;
  * @param <T> Provided type
  */
 public class ProviderFactory<T> extends ConstructionFactory<T> {
-    protected final Class<? extends Provider<T>> providerType;
-    private TargetFactory<Provider<T>> providerFactory;
+  protected final Class<? extends Provider<T>> providerType;
+  private TargetFactory<Provider<T>> providerFactory;
 
-    /**
-     * Creates a new ProviderFactory object.
-     * 
-     * @param providerType Provider type
-     */
-    ProviderFactory(Class<? extends Provider<T>> providerType) {
-        super(providerType, FactoryType.Provider);
-        this.providerType = providerType;
-    }
+  /**
+   * Creates a new ProviderFactory object.
+   * 
+   * @param providerType Provider type
+   */
+  ProviderFactory(Class<? extends Provider<T>> providerType) {
+    super(providerType, FactoryType.Provider);
+    this.providerType = providerType;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    T get(InjectionContext pContext, ConstructionInjector<T> constructionInjector, Object[] args) {
-        return constructionInjector.construct(pContext, providerFactory.get(pContext, null), args);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  T get(InjectionContext pContext, ConstructionInjector<T> constructionInjector, Object[] args) {
+    return constructionInjector.construct(pContext, providerFactory.get(pContext, null), args);
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    void initialize() {
-        super.initialize();
-        providerFactory = new TargetFactory<Provider<T>>(providerType);
-        providerFactory.initialize();
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  void initialize() {
+    super.initialize();
+    providerFactory = new TargetFactory<Provider<T>>(providerType);
+    providerFactory.initialize();
+  }
 }

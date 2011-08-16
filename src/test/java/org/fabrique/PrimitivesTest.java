@@ -9,10 +9,9 @@ import org.fabrique.Primitives;
 import org.junit.Before;
 import org.junit.Test;
 
-
-
 /**
- * Tests the usage of primitives while performing injection and retrieving instances from the Factory.
+ * Tests the usage of primitives while performing injection and retrieving instances from the
+ * Factory.
  */
 public class PrimitivesTest {
   /** Tests various injection of primitives */
@@ -68,12 +67,12 @@ public class PrimitivesTest {
     final Integer _defaultInteger = new Integer(5);
 
     ObjectFactory.loadModules(new AbstractModule() {
-        protected void configure() {
-          bind(TestClass.class);
-          bind(Integer.TYPE).toInstance(_defaultInt);
-          bind(Integer.class).toInstance(_defaultInteger);
-        }
-      });
+      protected void configure() {
+        bind(TestClass.class);
+        bind(Integer.TYPE).toInstance(_defaultInt);
+        bind(Integer.class).toInstance(_defaultInteger);
+      }
+    });
 
     TestClass _test = ObjectFactory.getInstance(TestClass.class);
     assertEquals(_defaultInt, _test.testFieldInt);

@@ -36,5 +36,5 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 @Documented
 public @interface Inject {
-    boolean optional() default false;
+  boolean optional() default false;
 }
