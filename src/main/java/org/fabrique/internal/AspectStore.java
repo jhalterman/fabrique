@@ -14,6 +14,13 @@ public final class AspectStore {
   }
 
   /**
+   * Clears all aspects from the store.
+   */
+  public static void clear() {
+    methodAspects.clear();
+  }
+
+  /**
    * Adds a method aspect to the store.
    * 
    * @param aspect MethodAspect

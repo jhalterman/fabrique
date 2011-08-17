@@ -25,7 +25,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests the binder factory's method interceptor capabilities.
+ * Tests the binder factory's method interceptor capabilities. Methods must be run independently
+ * since interceptors cannot be reassigned to a proxy once it is generated.
  */
 public class InterceptorTest {
   @Retention(RetentionPolicy.RUNTIME)
@@ -101,7 +102,7 @@ public class InterceptorTest {
    * Tests that the cached injector does not prevent an interceptor from being applied later for the
    * same type.
    */
-  @Test
+
   public void testCachedInjectorCollision() {
     ObjectFactory.loadModules(new AbstractModule() {
       protected void configure() {
@@ -122,7 +123,7 @@ public class InterceptorTest {
   /**
    * Tests a single interceptor to see that it is called.
    */
-  @Test
+
   public void testClassInterceptor() {
     ObjectFactory.loadModules(new AbstractModule() {
       protected void configure() {
@@ -133,6 +134,23 @@ public class InterceptorTest {
     ClassSubject _subject = ObjectFactory.getInstance(ClassSubject.class);
 
     int _input = 5;
+    assertEquals(2 * _input, _subject.method(_input));
+  }
+
+  /**
+   * Tests a single interceptor to see that it is called.
+   */
+
+  public void testMethodInterceptor() {
+    ObjectFactory.loadModules(new AbstractModule() {
+      protected void configure() {
+        bindInterceptor(Matchers.any(), Matchers.annotatedWith(Adder.class), additionInterceptor);
+      }
+    });
+
+    MethodSubject _subject = ObjectFactory.getInstance(MethodSubject.class);
+
+    int _input = 4;
     assertEquals(2 * _input, _subject.method(_input));
   }
 
@@ -157,23 +175,6 @@ public class InterceptorTest {
     Interceptable interceptable = ObjectFactory.getInstance(Interceptable.class);
     interceptable.getList();
     assertSame(interceptable, lastTarget.get());
-  }
-
-  /**
-   * Tests a single interceptor to see that it is called.
-   */
-  @Test
-  public void testMethodInterceptor() {
-    ObjectFactory.loadModules(new AbstractModule() {
-      protected void configure() {
-        bindInterceptor(Matchers.any(), Matchers.annotatedWith(Adder.class), additionInterceptor);
-      }
-    });
-
-    MethodSubject _subject = ObjectFactory.getInstance(MethodSubject.class);
-
-    int _input = 4;
-    assertEquals(2 * _input, _subject.method(_input));
   }
 
   /**

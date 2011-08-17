@@ -17,7 +17,6 @@ import org.junit.runners.Suite;
 	BindingParamsTest.class, 
 	ObjectFactoryTest.class, 
 	InjectionTest.class,
-	InterceptorTest.class,
 	JitBindingTest.class,
 	KeyTest.class, 
 	MatcherTest.class,

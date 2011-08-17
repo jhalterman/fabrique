@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.fabrique.internal.AspectStore;
 import org.fabrique.internal.Bindings;
 import org.fabrique.internal.Errors;
 import org.fabrique.internal.BindingLoader;
@@ -463,6 +464,7 @@ public final class ObjectFactory {
   private static void clearBindings() {
     bindings.clear();
     jitBindings.clear();
+    AspectStore.clear();
     if (bindingsMultimap != null)
       bindingsMultimap.clear();
   }

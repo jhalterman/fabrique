@@ -116,7 +116,7 @@ public class MatcherTest {
   @Test
   public void testInPackage() {
     Package matchersPackage = Matchers.class.getPackage();
-    assertEquals("inPackage(com.dorado.common.binder.matcher)", inPackage(matchersPackage)
+    assertEquals("inPackage(org.fabrique.matcher)", inPackage(matchersPackage)
         .toString());
     assertTrue(inPackage(matchersPackage).matches(MatcherTest.class));
     assertFalse(inPackage(matchersPackage).matches(Object.class));
