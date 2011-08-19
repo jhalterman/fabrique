@@ -114,7 +114,7 @@ Fabrique can manage the lifecycle of objects based on a configured scope:
     bind(Service.class).to(ServiceImpl.class).in(Scopes.SINGLETON);
     assert ObjectFactory.getInstance(Service.class) == ObjectFactory.getInstance(Service.class);
     
-## AOP
+### AOP
 
 Fabrique supports method interceptors which can be bound to matching classes and/or methods:
 
