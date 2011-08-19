@@ -1,4 +1,4 @@
-# Fabrique 0.1.0
+# Fabrique
 
 A lightweight configurable factory and dependency injection container with optional AOP support. Initially based on Guice's [Injector API](http://google-guice.googlecode.com/svn/trunk/javadoc/com/google/inject/Injector.html) and [Binder EDSL](http://google-guice.googlecode.com/svn/trunk/javadoc/com/google/inject/Binder.html).
 
@@ -53,6 +53,21 @@ Named instances can then be retrieved:
 
     Service lazyService = ObjectFactory.getNamedInstance(Service.class, LAZY);
     Service transactionalService = ObjectFactory.getNamedInstance(Service.class, TRANSACTIONAL);
+    
+Annotations can also be created and used to represent injection points for specific named bindings:
+
+    @Target(FIELD) 
+    @Retention(RUNTIME)
+    @BindingAnnotation
+    public @interface Threadsafe {}
+
+    bind(List.class).as(Threadsafe.class).to(Vector.class);
+  
+    class Service {
+      @Inject @Threadsafe List threadsafeList;
+    }
+
+    assert ObjectFactory.getInstance(Service.class).items instanceof Vector;
 
 ### Providers
 
@@ -98,7 +113,28 @@ Fabrique can manage the lifecycle of objects based on a configured scope:
 
     bind(Service.class).to(ServiceImpl.class).in(Scopes.SINGLETON);
     assert ObjectFactory.getInstance(Service.class) == ObjectFactory.getInstance(Service.class);
+    
+## AOP
+
+Fabrique supports method interceptors which can be bound to matching classes and/or methods:
+
+    private final IMethodInterceptor traceInterceptor = new IMethodInterceptor() {
+      public Object invoke(MethodInvocation invocation) throws Throwable {
+        System.out.println("Entering method " + invocation.getMethod().getName());
+        Object result = invocation.proceed();
+        System.out.println("Exiting method " + invocation.getMethod().getName());
+      }
+    };
+
+    bindInterceptors(Matchers.any(), Matchers.isMethod("toString"), traceInterceptor);
+    bindInterceptors(Matchers.annotatedWith(Trace.class), Matchers.any(), traceInterceptor);
+
+## Setup
+
+[Download](https://github.com/jhalterman/fabrique/downloads) the latest Fabrique jar and add it to your classpath.
 
 ## Design Notes
 
-While the desire to provide a single globally accessible injector API, such as was initially used by [StructureMap](http://structuremap.sourceforge.net), enhances usability for some use cases, it is clearly not suitable for use cases where multiple injectors are beneficial. The single injector approach poses a challenge for long running test sessions, where bindings loaded into the injector from one test method may interfere with those for other methods. This requires resetting the injector prior to invoking a test method.
+While the desire to provide a single globally accessible injector API, such as was initially used by [StructureMap](http://structuremap.sourceforge.net), enhances usability for some use cases, it is not suitable for use cases where multiple injectors are beneficial. The single injector approach, while easy to use, can pose a challenge for long running test sessions where bindings loaded into the injector from one test method may interfere with those for other methods. This requires resetting the injector prior to invoking a test method.
+
+Overall though, Fabrique provides easier use where global injector accessibility is desired or where numerous injectors are not needed.
