@@ -28,106 +28,126 @@ Integrating with closed services involves the ability to define injection points
 
 To configure Fabrique for use, Module instances which contain binding definitions are loaded into the ObjectFactory:
 
-    public class ServiceModule extends AbstractModule {
-      protected void configure() {
-        bind(Service.class).to(ServiceImpl.class);
-        bind(AnotherService.class).toInstance(serviceInstance);
-      }
-    }
-    
-    ObjectFactory.loadModules(new ServiceModule());
-    
+```java
+public class ServiceModule extends AbstractModule {
+  protected void configure() {
+    bind(Service.class).to(ServiceImpl.class);
+    bind(AnotherService.class).toInstance(serviceInstance);
+  }
+}
+
+ObjectFactory.loadModules(new ServiceModule());
+```
+
 Instances can then be retrieved:
 
-    Service service = ObjectFactory.getInstance(Service.class);
-    AnotherService anotherService = ObjectFactory.getInstance(AnotherService.class);
+```java
+Service service = ObjectFactory.getInstance(Service.class);
+AnotherService anotherService = ObjectFactory.getInstance(AnotherService.class);
+```
 
 ### Named Bindings
 
 Different implementations of the same type can be bound to a given name via binding definitions:
 
-    bind(Service.class).as(LAZY).to(LazyServiceImpl.class);
-    bind(Service.class).as(TRANSACTIONAL).to(TransactionalServiceImpl.class);
+```java
+bind(Service.class).as(LAZY).to(LazyServiceImpl.class);
+bind(Service.class).as(TRANSACTIONAL).to(TransactionalServiceImpl.class);
+```
 
 Named instances can then be retrieved:
 
-    Service lazyService = ObjectFactory.getNamedInstance(Service.class, LAZY);
-    Service transactionalService = ObjectFactory.getNamedInstance(Service.class, TRANSACTIONAL);
-    
+```java
+Service lazyService = ObjectFactory.getNamedInstance(Service.class, LAZY);
+Service transactionalService = ObjectFactory.getNamedInstance(Service.class, TRANSACTIONAL);
+```
+
 Annotations can also be created and used to represent injection points for specific named bindings:
 
-    @Target(FIELD) 
-    @Retention(RUNTIME)
-    @BindingAnnotation
-    public @interface Threadsafe {}
+```java
+@Target(FIELD) 
+@Retention(RUNTIME)
+@BindingAnnotation
+public @interface Threadsafe {}
 
-    bind(List.class).as(Threadsafe.class).to(Vector.class);
-  
-    class Service {
-      @Inject @Threadsafe List threadsafeList;
-    }
+bind(List.class).as(Threadsafe.class).to(Vector.class);
 
-    assert ObjectFactory.getInstance(Service.class).items instanceof Vector;
+class Service {
+  @Inject @Threadsafe List threadsafeList;
+}
+
+assert ObjectFactory.getInstance(Service.class).items instanceof Vector;
+```
 
 ### Providers
 
 Providers allow for separate types to exercise full control over object provisioning:
 
-    bind(String.class).toProvider(new Provider<String>() {
-        public void get() { return "abc"; }
-    });
-    
-    assert ObjectFactory.getInstance(String.class).equals("abc");
+```java
+bind(String.class).toProvider(new Provider<String>() {
+  public void get() { return "abc"; }
+});
+
+assert ObjectFactory.getInstance(String.class).equals("abc");
+```
 
 ### Explicit Arguments
 
 Explicit construction arguments can be passed through the ObjectFactory to the corresponding constructor or provider `get` method:
 
-    class StringProvider implements Provider<String> {
-        public void get(String s) { return s + "bar"; }
-    }
+```java
+class StringProvider implements Provider<String> {
+  public void get(String s) { return s + "bar"; }
+}
 
-    bind(List.class).to(ArrayList.class);
-    bind(String.class).toProvider(StringProvider.class);
-    
-    assert ObjectFactory.getInstance(List.class, 3).size() == 3;
-    assert ObjectFactory.getInstance(String.class, "foo").equals("foobar");
+bind(List.class).to(ArrayList.class);
+bind(String.class).toProvider(StringProvider.class);
+
+assert ObjectFactory.getInstance(List.class, 3).size() == 3;
+assert ObjectFactory.getInstance(String.class, "foo").equals("foobar");
+```
 
 ### Closed Service Integration
 
 Injection points for constructors on closed services can be identified by their parameter types:
 
-     bind(DAO.class).to(DAOImpl.class)
-        .forParams(UnitOfWork.class, Session.class);
+```java
+bind(DAO.class).to(DAOImpl.class)
+  .forParams(UnitOfWork.class, Session.class);
+```
      
 Additional optional injection points can be similarly identified:
 
-    bind(Service.class).to(ServiceImpl.class)
-        .forParams(Connection.class)
-        .forOptionalParams(Session.class, Connection.class)
-        .forOptionalParams(UnitOfWork.class, Session.class);
+```java
+bind(Service.class).to(ServiceImpl.class)
+  .forParams(Connection.class)
+  .forOptionalParams(Session.class, Connection.class)
+  .forOptionalParams(UnitOfWork.class, Session.class);
+```
 
 ### Scopes
 
 Fabrique can manage the lifecycle of objects based on a configured scope:
 
-    bind(Service.class).to(ServiceImpl.class).in(Scopes.SINGLETON);
-    assert ObjectFactory.getInstance(Service.class) == ObjectFactory.getInstance(Service.class);
+bind(Service.class).to(ServiceImpl.class).in(Scopes.SINGLETON);
+assert ObjectFactory.getInstance(Service.class) == ObjectFactory.getInstance(Service.class);
     
 ### AOP
 
 Fabrique supports method interceptors which can be bound to matching classes and/or methods:
 
-    private final IMethodInterceptor traceInterceptor = new IMethodInterceptor() {
-      public Object invoke(MethodInvocation invocation) throws Throwable {
-        System.out.println("Entering method " + invocation.getMethod().getName());
-        Object result = invocation.proceed();
-        System.out.println("Exiting method " + invocation.getMethod().getName());
-      }
-    };
+```java
+private final IMethodInterceptor traceInterceptor = new IMethodInterceptor() {
+  public Object invoke(MethodInvocation invocation) throws Throwable {
+    System.out.println("Entering method " + invocation.getMethod().getName());
+    Object result = invocation.proceed();
+    System.out.println("Exiting method " + invocation.getMethod().getName());
+  }
+};
 
-    bindInterceptors(Matchers.any(), Matchers.isMethod("toString"), traceInterceptor);
-    bindInterceptors(Matchers.annotatedWith(Trace.class), Matchers.any(), traceInterceptor);
+bindInterceptors(Matchers.any(), Matchers.isMethod("toString"), traceInterceptor);
+bindInterceptors(Matchers.annotatedWith(Trace.class), Matchers.any(), traceInterceptor);
+```
 
 ## Setup
 
