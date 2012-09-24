@@ -129,8 +129,10 @@ bind(Service.class).to(ServiceImpl.class)
 
 Fabrique can manage the lifecycle of objects based on a configured scope:
 
+```java
 bind(Service.class).to(ServiceImpl.class).in(Scopes.SINGLETON);
 assert ObjectFactory.getInstance(Service.class) == ObjectFactory.getInstance(Service.class);
+```
     
 ### AOP
 
